@@ -1,0 +1,22 @@
+version: '2.1'
+services:
+  app:
+    build: .
+    ports:
+      - '9292:9292'
+    volumes:
+      - .:/app
+    links:
+      - mysql
+  mysql:
+    image: "mysql"
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      MYSQL_DATABASE: app
+      MYSQL_USER: app
+      MYSQL_PASSWORD: app
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --skip-character-set-client-handshake
